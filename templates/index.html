@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <title>Spalvų traukimo programa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Spalvų traukimo sistema</h1>
+
+        <label for="vardas">Pasirinkite savo vardą:</label>
+        <select id="vardas">
+            <option value="">-- Pasirinkite vardą --</option>
+            {% for v in vardai %}
+                <option value="{{ v }}">{{ v }}</option>
+            {% endfor %}
+        </select>
+
+        <button id="mygtukas">Ištraukti spalvą</button>
+
+        <p id="rezultatas"></p>
+
+        <h3>Jau pasirinkę:</h3>
+        <ul id="rezultatai">
+            {% for vardas, spalva in rezultatai.items() %}
+                <li>{{ vardas }} → {{ spalva }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        document.getElementById("mygtukas").addEventListener("click", function() {
+            const vardas = document.getElementById("vardas").value;
+            if (!vardas) {
+                alert("Pasirinkite vardą!");
+                return;
+            }
+
+            fetch("/istraukti", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "vardas=" + encodeURIComponent(vardas)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.klaida) {
+                    alert(data.klaida);
+                } else {
+                    document.getElementById("rezultatas").innerText =
+                        `${data.vardas} gavo spalvą: ${data.spalva}`;
+                    location.reload();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
