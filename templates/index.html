@@ -19,14 +19,14 @@
 
         <button id="mygtukas">Ištraukti spalvą</button>
 
-        <p id="rezultatas"></p>
-
+        <p id="rezultatas" style="font-weight:bold; margin-top:20px;"></p>
 
     </div>
 
     <script>
         document.getElementById("mygtukas").addEventListener("click", function() {
-            const vardas = document.getElementById("vardas").value;
+            const vardasSelect = document.getElementById("vardas");
+            const vardas = vardasSelect.value;
             if (!vardas) {
                 alert("Pasirinkite vardą!");
                 return;
@@ -42,13 +42,16 @@
                 if (data.klaida) {
                     alert(data.klaida);
                 } else {
-                    document.getElementById("rezultatas").innerText =
-                        `${data.vardas} gavo spalvą: ${data.spalva}`;
-                    location.reload();
+                    // Parodome tik vartotojo spalvą
+                    const rez = document.getElementById("rezultatas");
+                    rez.innerText = `Sveikiname, ${data.vardas}! Jūsų spalva: ${data.spalva}`;
+                    
+                    // Išjungiame mygtuką ir disable vardų select, kad negalėtų traukti daugiau
+                    document.getElementById("mygtukas").disabled = true;
+                    vardasSelect.disabled = true;
                 }
             });
         });
     </script>
 </body>
 </html>
-
