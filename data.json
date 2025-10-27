@@ -1,0 +1,5 @@
+{
+  "vardai": ["Jonas", "Mantas", "Laura", ...],
+  "spalvos": ["Raudona", "Žalia", ...],
+  "rezultatai": {"Jonas": "Raudona", ...}
+}
